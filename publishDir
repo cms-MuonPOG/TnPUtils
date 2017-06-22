@@ -8,9 +8,15 @@ import os
 Setup argument parser
 """
 
+programDir = os.path.dirname(__file__)
+defaultPHP = os.path.join(programDir,"index.php")
+defaultHTA = os.path.join(programDir,"htaccess")
+
+
 parser = argparse.ArgumentParser(description="This program goes from the toplevel directory recursively downwards and places a index PHP in each directory. Then, it's possible to browse files more conveniently with a web browser. Note, that the PHP files have to be accessed through a web server such as Apache with PHP support.")
 parser.add_argument("toplevelDirectory", help="Path to the toplevel directory, which is the starting point for the recursion")
-parser.add_argument("inputPHPfile", help="Path to the file source, which is placed in each directory")
+parser.add_argument("-i", "--inputPHPfile", default=defaultPHP, help="Path to the file source, which is placed in each directory")
+parser.add_argument("-a", "--accessFile", default=defaultHTA, help="Name of the file with the permissions to be put as .htacces in the base directory")
 parser.add_argument("-o", "--outputFilename", default="index.php", help="Name of the output file, which is placed in each directory")
 parser.add_argument("-v", "--verbosity", default=1, help="Increase or decrease output verbosity")
 args = parser.parse_args()
@@ -23,10 +29,17 @@ Go through directories from given toplevel directory and put the given PHP file 
 with open(args.inputPHPfile, 'r') as f:
     src = f.read()
 
+# Read input htaccess file
+with open(args.accessFile, 'r') as f:
+    access = f.read()
+
 # Walk downwards through toplevel directory and put given PHP file there
 if args.verbosity == 1:
     print('Start from toplevel dir: {}'.format(args.toplevelDirectory))
     print('Output filename: {}'.format(args.outputFilename))
+
+with open(os.path.join(args.toplevelDirectory, ".htaccess"), 'w') as f:
+    f.write(access)
 
 for currentDir, subdirs, files in os.walk(args.toplevelDirectory):
     if args.verbosity == 1:

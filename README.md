@@ -131,14 +131,14 @@ The program `makeHistPlots` can produce histograms from TnP trees. It can be use
 
 ### Publish directory as a web page
 
-The program `publishDir` copies a given file, e.g, the `index.php` file from this repository, recursively into a given directory. Then, it is easily browsable through a web browser, if the directory is accessed through a web server such as Apache. You can do this as CERN user, follow [this link](https://espace.cern.ch/webservices-help/websitemanagement/ManagingWebsitesAtCERN/Pages/WebsitecreationandmanagementatCERN.aspx) for more information. Following example shows an use-case in combination with the `makeRatioPlot` tool.
+The program `publishDir` copies a given file, e.g, the `index.php` file from this repository, recursively into a given directory. Then, it is easily browsable through a web browser, if the directory is accessed through a web server such as Apache. It is also adding an appropriate `.htaccess` file to ensure correct access to the webpages. You can do this as CERN user, follow [this link](https://espace.cern.ch/webservices-help/websitemanagement/ManagingWebsitesAtCERN/Pages/WebsitecreationandmanagementatCERN.aspx) for more information. Following example shows an use-case in combination with the `makeRatioPlot` tool.
 
 ```bash
 # Create plots
 ./makeRatioPlot examples/configRatioPlot.json
 
 # Make them accessable through a PHP web page
-./publishDir exampleRatio index.php
+./publishDir exampleRatio
 
 # Now, you need to copy the 'exampleRatio' folder to a directory,
 # which is accessible by the web server.
